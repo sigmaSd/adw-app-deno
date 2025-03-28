@@ -75,6 +75,10 @@ app.run((window) => {
     </body>
     </html>
   `;
+  webview.navigate(`data:text/html,${encodeURIComponent(html)}`);
+});
+// TODO FIXME
+Deno.exit(0);
 ```
 
 ## API
