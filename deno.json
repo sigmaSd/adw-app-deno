@@ -1,5 +1,6 @@
 {
   "name": "@sigmasd/adw-app",
-  "version": "0.1.1",
-  "exports": "./lib.ts"
+  "version": "0.1.2",
+  "exports": "./lib.ts",
+  "license": "MIT"
 }

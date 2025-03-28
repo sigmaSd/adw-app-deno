@@ -1,9 +1,51 @@
+const gtk4Symbols = {
+  gtk_application_window_new: {
+    parameters: ["pointer"],
+    result: "pointer",
+  },
+  gtk_widget_show: { parameters: ["pointer"], result: "void" },
+  gtk_window_set_title: {
+    parameters: ["pointer", "pointer"],
+    result: "void",
+  },
+  gtk_window_set_default_size: {
+    parameters: ["pointer", "i32", "i32"],
+    result: "void",
+  },
+} as const;
+
+const glibSymbols = {
+  g_application_run: {
+    parameters: ["pointer", "i32", "pointer"],
+    result: "i32",
+  },
+  g_signal_connect_data: {
+    parameters: [
+      "pointer",
+      "pointer",
+      "pointer",
+      "pointer",
+      "pointer",
+      "i32",
+    ],
+    result: "u64",
+  },
+} as const;
+
+const adwSymbols = {
+  adw_application_new: {
+    parameters: ["pointer", "i32"],
+    result: "pointer",
+  },
+  adw_init: { parameters: [], result: "void" },
+} as const;
+
 export class AdwApp {
-  id;
-  gtk4;
-  glib;
-  adw;
-  app;
+  id: string;
+  gtk4: Deno.DynamicLibrary<typeof gtk4Symbols>;
+  glib: Deno.DynamicLibrary<typeof glibSymbols>;
+  adw: Deno.DynamicLibrary<typeof adwSymbols>;
+  app: Deno.PointerValue;
 
   activateCallback?: Deno.UnsafeCallback<
     {
@@ -19,49 +61,13 @@ export class AdwApp {
     const adwLibraryName = "libadwaita-1.so.0";
 
     // Load GTK4 library
-    this.gtk4 = Deno.dlopen(gtkLibraryName, {
-      gtk_application_window_new: {
-        parameters: ["pointer"],
-        result: "pointer",
-      },
-      gtk_widget_show: { parameters: ["pointer"], result: "void" },
-      gtk_window_set_title: {
-        parameters: ["pointer", "pointer"],
-        result: "void",
-      },
-      gtk_window_set_default_size: {
-        parameters: ["pointer", "i32", "i32"],
-        result: "void",
-      },
-    });
+    this.gtk4 = Deno.dlopen(gtkLibraryName, gtk4Symbols);
 
     // Load GLib library
-    this.glib = Deno.dlopen(gLibraryName, {
-      g_application_run: {
-        parameters: ["pointer", "i32", "pointer"],
-        result: "i32",
-      },
-      g_signal_connect_data: {
-        parameters: [
-          "pointer",
-          "pointer",
-          "pointer",
-          "pointer",
-          "pointer",
-          "i32",
-        ],
-        result: "u64",
-      },
-    });
+    this.glib = Deno.dlopen(gLibraryName, glibSymbols);
 
     // Load Adwaita library
-    this.adw = Deno.dlopen(adwLibraryName, {
-      adw_application_new: {
-        parameters: ["pointer", "i32"],
-        result: "pointer",
-      },
-      adw_init: { parameters: [], result: "void" },
-    });
+    this.adw = Deno.dlopen(adwLibraryName, adwSymbols);
 
     this.adw.symbols.adw_init();
 

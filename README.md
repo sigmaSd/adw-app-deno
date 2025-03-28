@@ -86,19 +86,22 @@ The main class for creating GTK4/Adwaita applications.
 #### Constructor
 
 ```typescript
-new AdwApp({ id: string })
+new AdwApp({ id: string });
 ```
 
 - `id`: Application ID in reverse domain notation (e.g., "com.example.myapp")
 
 #### Methods
 
-- `run(callback?: (window: Deno.PointerValue) => void)`: Runs the application and creates a window
-  - The optional callback lets you customize the window or add widgets before display
+- `run(callback?: (window: Deno.PointerValue) => void)`: Runs the application
+  and creates a window
+  - The optional callback lets you customize the window or add widgets before
+    display
 
 #### Cleanup
 
-The class implements `Symbol.dispose` for proper resource cleanup with `using` syntax.
+The class implements `Symbol.dispose` for proper resource cleanup with `using`
+syntax.
 
 ## License
 
