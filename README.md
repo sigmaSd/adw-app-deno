@@ -64,18 +64,17 @@ app.run((window) => {
       <h1>Hello from AdwApp + Webview!</h1>
       <p>This is a simple example of embedding a webview in an Adwaita application.</p>
       <button id="btn">Click Me</button>
+      <div style="font-size:2rem" id="counter">0</div>
 
       <script>
         document.getElementById('btn').addEventListener('click', () => {
-          alert('Button clicked!');
+          const counter = document.getElementById('counter');
+          counter.textContent = parseInt(counter.textContent) + 1;
         });
       </script>
     </body>
     </html>
   `;
-
-  webview.navigate(`data:text/html,${encodeURIComponent(html)}`);
-});
 ```
 
 ## API
